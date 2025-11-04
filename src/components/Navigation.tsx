@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logo from "@/assets/logo.png";
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -44,9 +45,16 @@ const Navigation = () => {
             {/* Logo */}
             <button
               onClick={() => scrollToSection("hero")}
-              className="text-xl md:text-2xl font-bold text-gradient-gold hover:scale-105 transition-transform duration-300"
+              className="flex items-center gap-3 hover:scale-105 transition-transform duration-300 group"
             >
-              Al Sandouq Al Ahmar
+              <img 
+                src={logo} 
+                alt="Al Sandouq Al Ahmar Trading LLC Logo" 
+                className="h-12 md:h-14 w-auto drop-shadow-[0_0_15px_rgba(245,158,11,0.3)] group-hover:drop-shadow-[0_0_25px_rgba(245,158,11,0.5)] transition-all duration-300"
+              />
+              <span className="text-lg md:text-xl font-bold text-gradient-gold hidden sm:block">
+                Al Sandouq Al Ahmar
+              </span>
             </button>
 
             {/* Desktop Navigation */}
