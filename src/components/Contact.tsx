@@ -80,7 +80,7 @@ const Contact = () => {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-3xl md:text-5xl font-bold mb-4 text-gradient-gold">
-            Get In Touch
+            Get a Quote
           </h2>
           <p className="text-lg text-muted-foreground">
             Ready to discuss your metal trading needs? Reach out and let's build a partnership
