@@ -57,17 +57,17 @@ const Footer = () => {
       <div className="container mx-auto px-4 md:px-6 py-16 md:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Column 1 - Company Info */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-3 mb-2">
+          <div className="space-y-6">
+            <div className="flex flex-col items-start gap-4">
               <img 
                 src={logo} 
                 alt="Al Sandouq Al Ahmar Trading LLC Logo" 
-                className="h-16 w-auto drop-shadow-[0_0_20px_rgba(245,158,11,0.3)]"
+                className="h-24 md:h-28 w-auto drop-shadow-[0_0_25px_rgba(245,158,11,0.4)]"
               />
+              <h3 className="text-xl md:text-2xl font-bold text-gradient-gold">
+                Al Sandouq Al Ahmar Trading LLC
+              </h3>
             </div>
-            <h3 className="text-xl font-bold text-gradient-gold">
-              Al Sandouq Al Ahmar Trading LLC
-            </h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Leading metal trading company in UAE, specializing in ferrous, non-ferrous metals, and e-waste recycling since 2013.
             </p>
