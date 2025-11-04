@@ -48,15 +48,21 @@ All colors MUST be HSL.
 
     /* Premium Gradients */
     --gradient-hero: linear-gradient(135deg, hsl(199 89% 48%), hsl(217 91% 60%), hsl(258 90% 66%));
-    --gradient-card: linear-gradient(145deg, hsla(199 89% 48% / 0.1), hsla(38 92% 50% / 0.1));
+    --gradient-hero-overlay: linear-gradient(165deg, hsla(199 89% 48% / 0.15) 0%, hsla(258 90% 66% / 0.1) 50%, hsla(38 92% 50% / 0.15) 100%);
+    --gradient-card: linear-gradient(145deg, hsla(199 89% 48% / 0.08), hsla(38 92% 50% / 0.08));
+    --gradient-card-hover: linear-gradient(145deg, hsla(199 89% 48% / 0.15), hsla(38 92% 50% / 0.15));
     --gradient-text: linear-gradient(90deg, hsl(38 92% 50%), hsl(45 93% 58%), hsl(48 96% 68%));
-    --gradient-border: linear-gradient(135deg, hsl(199 89% 48% / 0.3), hsl(38 92% 50% / 0.3));
+    --gradient-text-shimmer: linear-gradient(90deg, hsl(38 92% 50%) 0%, hsl(45 93% 58%) 50%, hsl(38 92% 50%) 100%);
+    --gradient-border: linear-gradient(135deg, hsl(199 89% 48% / 0.4), hsl(38 92% 50% / 0.4));
+    --gradient-mesh: radial-gradient(at 0% 0%, hsla(199 89% 48% / 0.2) 0px, transparent 50%), radial-gradient(at 100% 0%, hsla(258 90% 66% / 0.15) 0px, transparent 50%), radial-gradient(at 100% 100%, hsla(38 92% 50% / 0.2) 0px, transparent 50%);
     
-    /* Shadows */
-    --shadow-premium: 0 10px 30px hsla(220 40% 6% / 0.3);
-    --shadow-glow-blue: 0 0 40px hsla(199 89% 48% / 0.3);
-    --shadow-glow-gold: 0 0 40px hsla(38 92% 50% / 0.3);
-    --shadow-elevated: 0 30px 80px hsla(199 89% 48% / 0.4);
+    /* Enhanced Shadows */
+    --shadow-premium: 0 20px 60px -15px hsla(220 40% 6% / 0.5), 0 10px 30px -10px hsla(220 40% 6% / 0.3);
+    --shadow-glow-blue: 0 0 60px hsla(199 89% 48% / 0.4), 0 0 100px hsla(199 89% 48% / 0.2);
+    --shadow-glow-gold: 0 0 60px hsla(38 92% 50% / 0.4), 0 0 100px hsla(38 92% 50% / 0.2);
+    --shadow-elevated: 0 40px 100px -20px hsla(199 89% 48% / 0.5), 0 20px 60px -10px hsla(199 89% 48% / 0.3);
+    --shadow-intense: 0 50px 150px -30px hsla(199 89% 48% / 0.6), 0 30px 90px -20px hsla(38 92% 50% / 0.4);
+    --shadow-subtle: 0 4px 20px -5px hsla(220 40% 6% / 0.3);
 
     /* Animations */
     --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -107,11 +113,21 @@ All colors MUST be HSL.
 
   /* Glass Morphism */
   .glass {
-    @apply backdrop-blur-xl bg-white/5 border border-white/10;
+    @apply backdrop-blur-xl bg-gradient-to-br from-white/[0.08] to-white/[0.03] border border-white/[0.15];
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
   }
 
   .glass-card {
-    @apply backdrop-blur-lg bg-white/[0.03] border border-white/10;
+    @apply backdrop-blur-lg bg-gradient-to-br from-white/[0.05] to-white/[0.02] border border-white/[0.12];
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+    transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .glass-card:hover {
+    @apply border-white/[0.25];
+    background: linear-gradient(145deg, hsla(199 89% 48% / 0.12), hsla(38 92% 50% / 0.08));
+    box-shadow: 0 16px 48px 0 rgba(31, 38, 135, 0.25), 0 0 60px rgba(14, 165, 233, 0.3);
+    transform: translateY(-8px) scale(1.02);
   }
 
   /* Premium Shadows */
@@ -129,6 +145,14 @@ All colors MUST be HSL.
 
   .shadow-elevated {
     box-shadow: var(--shadow-elevated);
+  }
+
+  .shadow-intense {
+    box-shadow: var(--shadow-intense);
+  }
+
+  .shadow-subtle {
+    box-shadow: var(--shadow-subtle);
   }
 
   /* Animation Utilities */
@@ -208,5 +232,23 @@ All colors MUST be HSL.
   }
   100% {
     background-position: 1000px 0;
+  }
+}
+
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 40px hsla(199 89% 48% / 0.3), 0 0 80px hsla(199 89% 48% / 0.1);
+  }
+  50% {
+    box-shadow: 0 0 60px hsla(199 89% 48% / 0.5), 0 0 120px hsla(199 89% 48% / 0.2);
   }
 }
