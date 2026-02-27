@@ -63,13 +63,13 @@ const Contact = () => {
     {
       icon: Mail,
       title: "Email Us",
-      content: "info@alsandouqalahmar.com",
+      content: "amitjain@alsandouqalahmar.com",
       subtext: "Response within 24 hours",
     },
     {
       icon: Phone,
       title: "Call Us",
-      content: "+971 XX XXX XXXX",
+      content: "+971 502033064",
       subtext: "Mon-Sat: 9AM - 6PM GST",
     },
   ];
