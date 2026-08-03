@@ -62,12 +62,28 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        charcoal: "hsl(var(--charcoal))",
+        gunmetal: "hsl(var(--gunmetal))",
+        rust: "hsl(var(--rust))",
+        brass: "hsl(var(--brass))",
+        "brass-light": "hsl(var(--brass-light))",
+        paper: {
+          DEFAULT: "hsl(var(--paper))",
+          dim: "hsl(var(--paper-dim))",
+          low: "hsl(var(--paper-low))",
+          container: "hsl(var(--paper-container))",
+          high: "hsl(var(--paper-high))",
+          highest: "hsl(var(--paper-highest))",
+        },
+        sheet: "hsl(var(--sheet))",
+        rule: "hsl(var(--rule))",
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        lg: "0",
+        md: "0",
+        sm: "0",
       },
+
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
