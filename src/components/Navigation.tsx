@@ -34,10 +34,10 @@ const Navigation = () => {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 border-b transition-all duration-200 ${
           isScrolled
-            ? "glass shadow-premium py-3"
-            : "bg-transparent py-6"
+            ? "bg-paper border-border py-2 press-sm"
+            : "bg-paper/95 border-rule py-4"
         }`}
       >
         <div className="container mx-auto px-4 md:px-6">
@@ -45,28 +45,28 @@ const Navigation = () => {
             {/* Logo */}
             <button
               onClick={() => scrollToSection("hero")}
-              className="flex items-center gap-4 hover:scale-105 transition-transform duration-300 group"
+              className="flex items-center gap-4 group"
             >
-              <img 
-                src={logo} 
-                alt="Al Sandouq Al Ahmar Trading LLC Logo" 
-                className="h-16 md:h-20 w-auto drop-shadow-[0_0_20px_rgba(245,158,11,0.4)] group-hover:drop-shadow-[0_0_30px_rgba(245,158,11,0.6)] transition-all duration-300"
+              <img
+                src={logo}
+                alt="Al Sandouq Al Ahmar Trading LLC Logo"
+                className="h-14 md:h-16 w-auto"
               />
-              <span className="text-xl md:text-2xl font-bold text-gradient-gold hidden lg:block">
+              <span className="font-display text-lg md:text-xl font-bold text-foreground hidden lg:block stamped">
                 Al Sandouq Al Ahmar
               </span>
             </button>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden md:flex items-center gap-7">
               {navLinks.map((link) => (
                 <button
                   key={link.id}
                   onClick={() => scrollToSection(link.id)}
-                  className="text-foreground/80 hover:text-foreground transition-colors duration-200 relative group"
+                  className="font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground hover:text-rust transition-colors duration-150 relative group"
                 >
                   {link.label}
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-hero transition-all duration-300 group-hover:w-full" />
+                  <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-rust transition-all duration-200 group-hover:w-full" />
                 </button>
               ))}
             </div>
@@ -74,7 +74,7 @@ const Navigation = () => {
             {/* CTA Button - Desktop */}
             <Button
               onClick={() => scrollToSection("contact")}
-              className="hidden md:flex bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--accent))] hover:shadow-glow-blue transition-all duration-300 hover:scale-105"
+              className="hidden md:inline-flex bg-primary text-primary-foreground border border-border font-mono text-xs uppercase tracking-[0.16em] hover:bg-rust hover:text-accent-foreground press-sm hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all duration-150"
             >
               Get Quote
             </Button>
@@ -82,9 +82,10 @@ const Navigation = () => {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden text-foreground hover:text-accent transition-colors duration-200"
+              className="md:hidden text-foreground hover:text-rust transition-colors duration-150"
+              aria-label="Toggle menu"
             >
-              {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+              {isMobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
             </button>
           </div>
         </div>
@@ -92,36 +93,26 @@ const Navigation = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`fixed inset-0 z-40 md:hidden transition-all duration-300 ${
+        className={`fixed inset-0 z-40 md:hidden transition-all duration-200 ${
           isMobileMenuOpen
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
         }`}
       >
-        <div className="absolute inset-0 bg-background/95 backdrop-blur-xl" />
-        <div className="relative h-full flex flex-col items-center justify-center gap-8 p-8">
-          {navLinks.map((link, index) => (
+        <div className="absolute inset-0 bg-paper" />
+        <div className="relative h-full flex flex-col items-center justify-center gap-6 p-8">
+          {navLinks.map((link) => (
             <button
               key={link.id}
               onClick={() => scrollToSection(link.id)}
-              className="text-2xl font-semibold text-foreground hover:text-gradient-gold transition-all duration-300 hover:scale-110"
-              style={{
-                animation: isMobileMenuOpen
-                  ? `fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) ${index * 0.1}s both`
-                  : "none",
-              }}
+              className="font-display text-2xl font-bold text-foreground hover:text-rust transition-colors duration-150"
             >
               {link.label}
             </button>
           ))}
           <Button
             onClick={() => scrollToSection("contact")}
-            className="mt-4 bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--accent))] hover:shadow-glow-blue transition-all duration-300"
-            style={{
-              animation: isMobileMenuOpen
-                ? `scaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) ${navLinks.length * 0.1}s both`
-                : "none",
-            }}
+            className="mt-4 bg-primary text-primary-foreground border border-border font-mono text-xs uppercase tracking-[0.16em] press-sm"
           >
             Get Quote
           </Button>

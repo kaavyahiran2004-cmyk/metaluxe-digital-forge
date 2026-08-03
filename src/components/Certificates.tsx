@@ -26,21 +26,20 @@ const Certificates = () => {
     },
   ];
 
+  const scrollToContact = () => {
+    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
-    <section id="certificates" className="relative py-20 md:py-32 bg-[hsl(var(--midnight-blue))]">
-      <div className="container mx-auto px-4 md:px-6">
+    <section id="certificates" className="relative py-20 md:py-28 bg-paper grain">
+      <div className="container relative mx-auto px-4 md:px-6">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6">
-            <Shield className="w-4 h-4 text-[hsl(var(--accent))]" />
-            <span className="text-sm uppercase tracking-wider text-muted-foreground font-semibold">
-              Certified Excellence
-            </span>
-          </div>
-          
-          <h2 className="text-3xl md:text-5xl font-bold mb-4 text-gradient-gold">
-            Certifications & Compliance
+        <div className="max-w-3xl mb-12">
+          <span className="tag mb-4">Certified Excellence</span>
+          <h2 className="font-display text-3xl md:text-5xl font-bold mb-4 text-foreground stamped">
+            Certifications &amp; Compliance
           </h2>
+          <div className="double-rule mb-4" />
           <p className="text-lg text-muted-foreground">
             Our commitment to quality and compliance is backed by internationally recognized certifications
           </p>
@@ -51,64 +50,50 @@ const Certificates = () => {
           {certificates.map((cert, index) => {
             const Icon = cert.icon;
             return (
-              <div
+              <article
                 key={index}
-                className="group relative glass-card rounded-2xl p-8 hover:shadow-elevated transition-all duration-500 hover:-translate-y-2"
+                className="relative border border-border bg-sheet press-hover"
                 style={{
-                  animation: `fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${index * 0.15}s both`,
+                  animation: `fadeIn 0.4s ease-out ${index * 0.08}s both`,
                 }}
               >
-                {/* Certificate Icon */}
-                <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent))] flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                  <Icon className="w-8 h-8 text-white" />
+                <div className="nameplate flex items-center justify-between">
+                  <span>{cert.type}</span>
+                  <span className="text-brass-light">Verified</span>
                 </div>
 
-                {/* Content */}
-                <div className="space-y-3">
-                  <h3 className="text-2xl font-bold text-foreground group-hover:text-gradient-gold transition-all duration-300">
+                <div className="p-6 space-y-4">
+                  <div className="w-12 h-12 border border-border bg-primary flex items-center justify-center">
+                    <Icon className="w-6 h-6 text-brass-light" />
+                  </div>
+
+                  <h3 className="font-display text-2xl font-bold text-foreground">
                     {cert.name}
                   </h3>
-                  
-                  <p className="text-sm text-[hsl(var(--accent))] font-semibold uppercase tracking-wider">
-                    {cert.type}
-                  </p>
-                  
+
                   <p className="text-muted-foreground text-sm leading-relaxed">
                     {cert.authority}
                   </p>
 
-                  <div className="pt-4 flex items-center justify-between border-t border-[hsl(var(--border))]">
-                    <span className="text-xs text-muted-foreground uppercase tracking-wider">
-                      Certified
-                    </span>
-                    <span className="text-sm font-bold text-[hsl(var(--primary))]">
-                      {cert.year}
-                    </span>
+                  <div className="pt-4 flex items-center justify-between border-t border-border font-mono text-[11px] uppercase tracking-[0.16em]">
+                    <span className="text-muted-foreground">Certified</span>
+                    <span className="text-rust font-bold">{cert.year}</span>
                   </div>
                 </div>
-
-                {/* Verification Badge */}
-                <div className="absolute top-4 right-4 w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center">
-                  <CheckCircle className="w-6 h-6 text-green-500" />
-                </div>
-
-                {/* Shimmer Effect */}
-                <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                </div>
-              </div>
+              </article>
             );
           })}
         </div>
 
         {/* Call to Action */}
-        <div className="text-center">
+        <div>
           <Button
             variant="outline"
             size="lg"
-            className="border-2 border-[hsl(var(--primary))] text-foreground hover:bg-[hsl(var(--primary))]/10 transition-all duration-300 hover:scale-105"
+            onClick={scrollToContact}
+            className="border border-border bg-transparent text-foreground font-mono text-xs uppercase tracking-[0.18em] px-8 py-6 press-sm hover:bg-primary hover:text-primary-foreground transition-all duration-150"
           >
-            <Shield className="mr-2 w-5 h-5" />
+            <Shield className="mr-3 w-4 h-4" />
             Request Verification Documents
           </Button>
         </div>
