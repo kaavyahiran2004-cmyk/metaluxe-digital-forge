@@ -14,104 +14,94 @@ const LivePrices = () => {
       toast.error("Please enter a valid email address");
       return;
     }
-    
+
     setIsSubmitting(true);
-    
-    // Simulate API call
+
     setTimeout(() => {
       toast.success("You'll be notified when live prices launch!");
       setEmail("");
       setIsSubmitting(false);
-    }, 1000);
+    }, 800);
   };
 
+  const features = [
+    { label: "Real-Time Updates", code: "RT" },
+    { label: "Historical Charts", code: "HC" },
+    { label: "Price Alerts", code: "PA" },
+  ];
+
   return (
-    <section id="live-prices" className="relative py-20 md:py-32 bg-background overflow-hidden">
-      {/* Animated Background Grid */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `
-            linear-gradient(hsl(var(--primary)) 1px, transparent 1px),
-            linear-gradient(90deg, hsl(var(--primary)) 1px, transparent 1px)
-          `,
-          backgroundSize: '50px 50px',
-        }} />
-      </div>
-
+    <section id="live-prices" className="relative py-20 md:py-28 bg-paper grain">
       <div className="container relative z-10 mx-auto px-4 md:px-6">
-        <div className="max-w-4xl mx-auto">
-          {/* Content Card */}
-          <div className="glass-card rounded-3xl p-8 md:p-16 text-center space-y-8 hover:shadow-elevated transition-all duration-500">
-            {/* Animated Icon */}
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent))] animate-glow-pulse">
-              <TrendingUp className="w-10 h-10 text-white" />
-            </div>
+        <div className="max-w-4xl mx-auto border-2 border-border bg-sheet press">
+          <div className="nameplate flex items-center justify-between">
+            <span className="inline-flex items-center gap-2">
+              <Clock className="w-3 h-3" /> Coming Soon
+            </span>
+            <span className="hidden sm:inline">Market Desk</span>
+          </div>
 
-            {/* Headline with Glitch Effect */}
-            <div className="space-y-4">
-              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full glass mb-4">
-                <Clock className="w-4 h-4 text-[hsl(var(--accent))] animate-pulse" />
-                <span className="text-sm uppercase tracking-wider text-muted-foreground font-semibold">
-                  Coming Soon
-                </span>
+          <div className="p-8 md:p-12 space-y-8">
+            <div className="flex items-start gap-4">
+              <div className="border border-border bg-primary p-3">
+                <TrendingUp className="w-6 h-6 text-brass-light" />
               </div>
-              
-              <h2 className="text-4xl md:text-5xl font-bold text-gradient-gold">
-                Live Metal Prices
-              </h2>
-              
-              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Real-time market data, price tracking, and instant quotes for all metal categories
-              </p>
+              <div>
+                <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground">
+                  Live Metal Prices
+                </h2>
+                <p className="mt-2 text-lg text-muted-foreground leading-relaxed">
+                  Real-time market data, price tracking, and instant quotes for all metal categories
+                </p>
+              </div>
             </div>
 
-            {/* Features Preview */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-8">
-              {[
-                { label: "Real-Time Updates", icon: "📊" },
-                { label: "Historical Charts", icon: "📈" },
-                { label: "Price Alerts", icon: "🔔" },
-              ].map((feature, index) => (
+            {/* Ledger rows */}
+            <div className="border-t border-border">
+              {features.map((feature, index) => (
                 <div
                   key={index}
-                  className="p-4 rounded-xl bg-[hsl(var(--midnight-blue))] border border-[hsl(var(--border))] hover:border-[hsl(var(--primary))] transition-all duration-300"
+                  className="flex items-center justify-between border-b border-rule py-3 hover:bg-paper-high transition-colors duration-150"
                 >
-                  <div className="text-3xl mb-2">{feature.icon}</div>
-                  <div className="text-sm font-medium text-foreground/80">
+                  <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+                    {feature.code}
+                  </span>
+                  <span className="font-mono text-sm uppercase tracking-[0.12em] text-foreground">
                     {feature.label}
-                  </div>
+                  </span>
+                  <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-rust">
+                    Pending
+                  </span>
                 </div>
               ))}
             </div>
 
             {/* Email Notification Form */}
-            <form onSubmit={handleNotifyMe} className="max-w-md mx-auto">
-              <p className="text-sm text-muted-foreground mb-4">
-                Be the first to know when we launch
-              </p>
-              <div className="flex gap-2">
+            <form onSubmit={handleNotifyMe} className="max-w-lg">
+              <label className="block font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground mb-2">
+                Notify me at launch
+              </label>
+              <div className="flex flex-col sm:flex-row gap-3">
                 <Input
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder="name@company.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="flex-1 bg-[hsl(var(--midnight-blue))] border-[hsl(var(--border))] focus:border-[hsl(var(--primary))] transition-all duration-300"
+                  className="flex-1 bg-paper-container border-0 border-b-2 border-border rounded-none etched focus-visible:ring-0 focus-visible:border-rust"
                   disabled={isSubmitting}
                 />
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--accent))] hover:shadow-glow-blue transition-all duration-300 whitespace-nowrap"
+                  className="bg-primary text-primary-foreground border border-border font-mono text-xs uppercase tracking-[0.16em] press-sm hover:bg-rust hover:text-accent-foreground whitespace-nowrap"
                 >
-                  {isSubmitting ? "Submitting..." : "Notify Me"}
+                  {isSubmitting ? "Submitting…" : "Notify Me"}
                 </Button>
               </div>
+              <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+                We only write when the desk goes live.
+              </p>
             </form>
-
-            {/* Trust Badge */}
-            <p className="text-xs text-muted-foreground">
-              🔒 Your email is safe with us. We'll only notify you about the launch.
-            </p>
           </div>
         </div>
       </div>
