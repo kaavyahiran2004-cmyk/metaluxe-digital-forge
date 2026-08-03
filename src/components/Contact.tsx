@@ -4,6 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+
+const inputClass =
+  "bg-paper-container border-0 border-b-2 border-border rounded-none etched focus-visible:ring-0 focus-visible:border-rust";
+
+const labelClass =
+  "block font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground mb-2";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -16,40 +23,57 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Basic validation
-    if (!formData.name || !formData.email || !formData.phone || !formData.message) {
+
+    const name = formData.name.trim();
+    const email = formData.email.trim();
+    const phone = formData.phone.trim();
+    const company = formData.company.trim();
+    const message = formData.message.trim();
+
+    if (!name || !email || !phone || !message) {
       toast.error("Please fill in all required fields");
       return;
     }
 
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       toast.error("Please enter a valid email address");
+      return;
+    }
+
+    if (message.length < 20) {
+      toast.error("Please write at least 20 characters in your message");
       return;
     }
 
     setIsSubmitting(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      const { data, error } = await supabase.functions.invoke("submit-quote", {
+        body: { name, email, phone, company, message },
+      });
+
+      if (error || (data && (data as { error?: string }).error)) {
+        throw error ?? new Error("Request failed");
+      }
+
       setIsSuccess(true);
-      toast.success("Message sent successfully! We'll respond within 24 hours.");
-      
-      // Reset after showing success
-      setTimeout(() => {
-        setIsSuccess(false);
-        setFormData({ name: "", email: "", phone: "", company: "", message: "" });
-      }, 3000);
-    }, 1500);
+      toast.success("Enquiry received. We'll respond within 24 hours.");
+      setFormData({ name: "", email: "", phone: "", company: "", message: "" });
+
+      setTimeout(() => setIsSuccess(false), 6000);
+    } catch {
+      toast.error("Could not send your enquiry. Please email amitjain@alsandouqalahmar.com directly.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     }));
   };
 
@@ -57,7 +81,7 @@ const Contact = () => {
     {
       icon: MapPin,
       title: "Visit Us",
-      content: "Dubai, United Arab Emirates",
+      content: "Industrial Area 10, Sharjah, UAE",
       subtext: "Warehouse available for inspection",
     },
     {
@@ -70,190 +94,175 @@ const Contact = () => {
       icon: Phone,
       title: "Call Us",
       content: "+971 502033064",
-      subtext: "Mon-Sat: 9AM - 6PM GST",
+      subtext: "Direct line to the trading desk",
     },
   ];
 
   return (
-    <section id="contact" className="relative py-20 md:py-32 bg-background">
-      <div className="container mx-auto px-4 md:px-6">
+    <section id="contact" className="relative py-20 md:py-28 bg-paper-container grain border-t border-border">
+      <div className="container relative mx-auto px-4 md:px-6">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4 text-gradient-gold">
+        <div className="max-w-3xl mb-12">
+          <span className="tag mb-4">Enquiry Form</span>
+          <h2 className="font-display text-3xl md:text-5xl font-bold mb-4 text-foreground stamped">
             Get a Quote
           </h2>
+          <div className="double-rule mb-4" />
           <p className="text-lg text-muted-foreground">
             Ready to discuss your metal trading needs? Reach out and let's build a partnership
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
           {/* Left Column - Contact Form */}
-          <div className="glass-card rounded-2xl p-8 md:p-10">
-            {!isSuccess ? (
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-foreground/80">
-                      Name *
-                    </label>
-                    <Input
-                      name="name"
-                      value={formData.name}
+          <div className="border-2 border-border bg-sheet press">
+            <div className="nameplate flex items-center justify-between">
+              <span>Quote Request</span>
+              <span className="hidden sm:inline">Form / ASA-Q</span>
+            </div>
+
+            <div className="p-6 md:p-8">
+              {!isSuccess ? (
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <label className={labelClass} htmlFor="name">Name *</label>
+                      <Input
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        placeholder="John Doe"
+                        maxLength={100}
+                        className={inputClass}
+                        disabled={isSubmitting}
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className={labelClass} htmlFor="email">Email *</label>
+                      <Input
+                        id="email"
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        placeholder="john@company.com"
+                        maxLength={255}
+                        className={inputClass}
+                        disabled={isSubmitting}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <label className={labelClass} htmlFor="phone">Phone *</label>
+                      <Input
+                        id="phone"
+                        type="tel"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        placeholder="+971 XX XXX XXXX"
+                        maxLength={40}
+                        className={inputClass}
+                        disabled={isSubmitting}
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className={labelClass} htmlFor="company">Company</label>
+                      <Input
+                        id="company"
+                        name="company"
+                        value={formData.company}
+                        onChange={handleChange}
+                        placeholder="Your Company"
+                        maxLength={150}
+                        className={inputClass}
+                        disabled={isSubmitting}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className={labelClass} htmlFor="message">Message *</label>
+                    <Textarea
+                      id="message"
+                      name="message"
+                      value={formData.message}
                       onChange={handleChange}
-                      placeholder="John Doe"
-                      className="bg-[hsl(var(--midnight-blue))] border-[hsl(var(--border))] focus:border-[hsl(var(--primary))] transition-all duration-300"
+                      placeholder="Tell us about your requirements..."
+                      rows={6}
+                      maxLength={2000}
+                      className={`${inputClass} resize-none`}
                       disabled={isSubmitting}
                       required
                     />
+                    <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+                      Minimum 20 characters
+                    </p>
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-foreground/80">
-                      Email *
-                    </label>
-                    <Input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder="john@company.com"
-                      className="bg-[hsl(var(--midnight-blue))] border-[hsl(var(--border))] focus:border-[hsl(var(--primary))] transition-all duration-300"
-                      disabled={isSubmitting}
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-foreground/80">
-                      Phone *
-                    </label>
-                    <Input
-                      type="tel"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      placeholder="+971 XX XXX XXXX"
-                      className="bg-[hsl(var(--midnight-blue))] border-[hsl(var(--border))] focus:border-[hsl(var(--primary))] transition-all duration-300"
-                      disabled={isSubmitting}
-                      required
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-foreground/80">
-                      Company
-                    </label>
-                    <Input
-                      name="company"
-                      value={formData.company}
-                      onChange={handleChange}
-                      placeholder="Your Company"
-                      className="bg-[hsl(var(--midnight-blue))] border-[hsl(var(--border))] focus:border-[hsl(var(--primary))] transition-all duration-300"
-                      disabled={isSubmitting}
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-foreground/80">
-                    Message *
-                  </label>
-                  <Textarea
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    placeholder="Tell us about your requirements..."
-                    rows={6}
-                    className="bg-[hsl(var(--midnight-blue))] border-[hsl(var(--border))] focus:border-[hsl(var(--primary))] transition-all duration-300 resize-none"
+                  <Button
+                    type="submit"
                     disabled={isSubmitting}
-                    required
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    Minimum 20 characters
-                  </p>
+                    className="w-full h-12 bg-primary text-primary-foreground border border-border font-mono text-xs uppercase tracking-[0.18em] press hover:bg-rust hover:text-accent-foreground hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all duration-150"
+                  >
+                    {isSubmitting ? "Sending…" : (
+                      <>
+                        Send Message
+                        <Send className="ml-3 w-4 h-4" />
+                      </>
+                    )}
+                  </Button>
+                </form>
+              ) : (
+                <div className="flex flex-col items-center justify-center py-12 space-y-6 text-center">
+                  <div className="w-16 h-16 border border-border bg-primary flex items-center justify-center">
+                    <CheckCircle className="w-8 h-8 text-brass-light" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="font-display text-2xl font-bold text-foreground">Thank You</h3>
+                    <p className="text-muted-foreground">
+                      Your enquiry has been logged. We'll respond within 24 hours.
+                    </p>
+                  </div>
                 </div>
-
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--accent))] hover:shadow-glow-blue transition-all duration-300 hover:scale-105 h-12"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <span className="animate-pulse">Sending...</span>
-                    </>
-                  ) : (
-                    <>
-                      Send Message
-                      <Send className="ml-2 w-4 h-4" />
-                    </>
-                  )}
-                </Button>
-              </form>
-            ) : (
-              <div className="flex flex-col items-center justify-center py-12 space-y-6 animate-scale-in">
-                <div className="w-20 h-20 rounded-full bg-green-500/20 flex items-center justify-center">
-                  <CheckCircle className="w-12 h-12 text-green-500" />
-                </div>
-                <div className="text-center space-y-2">
-                  <h3 className="text-2xl font-bold text-foreground">Thank You!</h3>
-                  <p className="text-muted-foreground">
-                    We've received your message and will respond within 24 hours.
-                  </p>
-                </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
 
           {/* Right Column - Contact Info */}
-          <div className="space-y-6">
+          <div className="border-t border-l border-border">
             {contactInfo.map((info, index) => {
               const Icon = info.icon;
               return (
                 <div
                   key={index}
-                  className="glass-card rounded-2xl p-6 hover:shadow-glow-blue transition-all duration-300 hover:-translate-y-1"
-                  style={{
-                    animation: `fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${index * 0.1}s both`,
-                  }}
+                  className="flex items-start gap-4 border-r border-b border-border bg-sheet p-6 hover:bg-paper-high transition-colors duration-150"
                 >
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent))] flex items-center justify-center flex-shrink-0">
-                      <Icon className="w-6 h-6 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-foreground mb-1">
-                        {info.title}
-                      </h3>
-                      <p className="text-lg text-[hsl(var(--accent))] font-medium mb-1">
-                        {info.content}
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        {info.subtext}
-                      </p>
-                    </div>
+                  <div className="w-11 h-11 border border-border bg-primary flex items-center justify-center flex-shrink-0">
+                    <Icon className="w-5 h-5 text-brass-light" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground mb-1">
+                      {info.title}
+                    </h3>
+                    <p className="font-display text-lg font-bold text-foreground break-words">
+                      {info.content}
+                    </p>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      {info.subtext}
+                    </p>
                   </div>
                 </div>
               );
             })}
-
-            {/* Additional Info */}
-            <div className="glass-card rounded-2xl p-6">
-              <h3 className="font-semibold text-foreground mb-3">Working Hours</h3>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Monday - Saturday</span>
-                  <span className="text-foreground font-medium">9:00 AM - 6:00 PM</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Sunday</span>
-                  <span className="text-foreground font-medium">Closed</span>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
