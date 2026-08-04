@@ -63,9 +63,11 @@ const Footer = () => {
               alt="Al Sandouq Al Ahmar Trading LLC Logo"
               className="h-20 w-auto"
             />
-            <h3 className="font-display text-xl font-bold text-brass-light">
-              Al Sandouq Al Ahmar Trading LLC
+            <h3 className="font-display text-xl font-bold text-logo-blue-light">
+              Al Sandouq Al Ahmar{" "}
+              <span className="text-logo-copper-light">Trading LLC</span>
             </h3>
+
             <p className="text-sm leading-relaxed text-[hsl(var(--paper-dim))]">
               Leading metal trading company in UAE, specializing in ferrous, non-ferrous metals, and e-waste recycling since 2013.
             </p>

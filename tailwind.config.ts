@@ -67,6 +67,11 @@ export default {
         rust: "hsl(var(--rust))",
         brass: "hsl(var(--brass))",
         "brass-light": "hsl(var(--brass-light))",
+        "logo-blue": "hsl(var(--logo-blue))",
+        "logo-blue-light": "hsl(var(--logo-blue-light))",
+        "logo-copper": "hsl(var(--logo-copper))",
+        "logo-copper-light": "hsl(var(--logo-copper-light))",
+
         paper: {
           DEFAULT: "hsl(var(--paper))",
           dim: "hsl(var(--paper-dim))",

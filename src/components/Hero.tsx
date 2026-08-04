@@ -51,10 +51,11 @@ const Hero = () => {
             </div>
 
             <div className="p-6 md:p-12 space-y-8">
-              <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight text-foreground">
+              <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight text-logo-blue">
                 Al Sandouq Al Ahmar
-                <span className="block text-rust mt-1">Trading LLC</span>
+                <span className="block text-logo-copper mt-1">Trading LLC</span>
               </h1>
+
 
               <div className="double-rule" />
 
