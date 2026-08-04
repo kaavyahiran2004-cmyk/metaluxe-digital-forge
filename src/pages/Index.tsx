@@ -6,12 +6,15 @@ import About from "@/components/About";
 import Certificates from "@/components/Certificates";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import CursorTrail from "@/components/CursorTrail";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <CursorTrail />
       <Navigation />
       <main>
+
         <Hero />
         <Products />
         <LivePrices />

@@ -58,9 +58,11 @@ const Navigation = () => {
                 alt="Al Sandouq Al Ahmar Trading LLC Logo"
                 className="h-14 md:h-16 w-auto"
               />
-              <span className="font-display text-lg md:text-xl font-bold text-foreground hidden lg:block stamped">
-                Al Sandouq Al Ahmar
+              <span className="font-display text-lg md:text-xl font-bold text-logo-blue hidden lg:block stamped">
+                Al Sandouq Al Ahmar{" "}
+                <span className="text-logo-copper">Trading LLC</span>
               </span>
+
             </button>
 
 
