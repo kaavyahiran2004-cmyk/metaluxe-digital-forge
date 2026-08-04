@@ -40,7 +40,13 @@ const Navigation = () => {
             : "bg-paper/95 border-rule py-4"
         }`}
       >
-        <div className="container mx-auto px-4 md:px-6">
+        {/* Schematic line-work overlay (desktop only) */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 hidden md:block schematic"
+        />
+
+        <div className="container mx-auto px-4 md:px-6 relative">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <button
@@ -56,6 +62,7 @@ const Navigation = () => {
                 Al Sandouq Al Ahmar
               </span>
             </button>
+
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-7">
