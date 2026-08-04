@@ -27,6 +27,13 @@
     --brass: 29 56% 47%;
     --brass-light: 32 100% 74%;
 
+    /* Sampled from the company logo */
+    --logo-blue: 205 86% 31%;
+    --logo-blue-light: 205 62% 62%;
+    --logo-copper: 19 54% 47%;
+    --logo-copper-light: 19 64% 64%;
+
+
     --card: 0 0% 100%;
     --card-foreground: 43 30% 9%;
 
