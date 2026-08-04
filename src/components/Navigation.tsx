@@ -40,7 +40,13 @@ const Navigation = () => {
             : "bg-paper/95 border-rule py-4"
         }`}
       >
-        <div className="container mx-auto px-4 md:px-6">
+        {/* Schematic line-work overlay (desktop only) */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 hidden md:block schematic"
+        />
+
+        <div className="container mx-auto px-4 md:px-6 relative">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <button
@@ -57,6 +63,7 @@ const Navigation = () => {
               </span>
             </button>
 
+
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-7">
               {navLinks.map((link) => (
@@ -71,25 +78,39 @@ const Navigation = () => {
               ))}
             </div>
 
-            {/* CTA Button - Desktop */}
-            <Button
-              onClick={() => scrollToSection("contact")}
-              className="hidden md:inline-flex bg-primary text-primary-foreground border border-border font-mono text-xs uppercase tracking-[0.16em] hover:bg-rust hover:text-accent-foreground press-sm hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all duration-150"
-            >
-              Get Quote
-            </Button>
+            {/* Part number stamp + CTA */}
+            <div className="flex items-center gap-4 md:gap-5">
+              <span className="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.22em] text-brass stamped whitespace-nowrap">
+                MTL-7042 // REV.C
+              </span>
 
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden text-foreground hover:text-rust transition-colors duration-150"
-              aria-label="Toggle menu"
-            >
-              {isMobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
-            </button>
+              {/* CTA Button - Desktop */}
+              <Button
+                onClick={() => scrollToSection("contact")}
+                className="hidden md:inline-flex bg-primary text-primary-foreground border border-border font-mono text-xs uppercase tracking-[0.16em] hover:bg-rust hover:text-accent-foreground press-sm hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all duration-150"
+              >
+                Get Quote
+              </Button>
+
+              {/* Mobile Menu Button */}
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="md:hidden text-foreground hover:text-rust transition-colors duration-150"
+                aria-label="Toggle menu"
+              >
+                {isMobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
+              </button>
+            </div>
           </div>
         </div>
+
+        {/* DIP package pin row */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute left-0 right-0 -bottom-[6px] dip-pins"
+        />
       </nav>
+
 
       {/* Mobile Menu */}
       <div
