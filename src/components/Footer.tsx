@@ -61,6 +61,8 @@ const Footer = () => {
             <img
               src={logo}
               alt="Al Sandouq Al Ahmar Trading LLC Logo"
+              loading="lazy"
+              decoding="async"
               className="h-20 w-auto"
             />
             <h3 className="font-display text-xl font-bold text-logo-blue-light">

@@ -56,6 +56,7 @@ const Navigation = () => {
               <img
                 src={logo}
                 alt="Al Sandouq Al Ahmar Trading LLC Logo"
+                decoding="async"
                 className="h-14 md:h-16 w-auto"
               />
               <span className="font-display text-lg md:text-xl font-bold text-logo-blue hidden lg:block stamped">
