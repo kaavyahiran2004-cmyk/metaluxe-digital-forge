@@ -8,9 +8,28 @@ const BodySchema = z.object({
   phone: z.string().trim().min(4).max(40),
   company: z.string().trim().max(150).optional().default(""),
   message: z.string().trim().min(20).max(2000),
+  // Honeypot: humans never see or fill this.
+  website: z.string().max(200).optional().default(""),
 });
 
 const NOTIFY_TO = "amitjain@alsandouqalahmar.com";
+
+const MAX_BODY_BYTES = 12_000;
+const WINDOW_MS = 60_000;
+const MAX_PER_WINDOW = 3;
+
+// Best-effort in-instance throttle. Not a distributed limiter, but it blunts
+// simple floods from a single source without extra infrastructure.
+const hits = new Map<string, number[]>();
+
+const throttled = (ip: string) => {
+  const now = Date.now();
+  const recent = (hits.get(ip) ?? []).filter((t) => now - t < WINDOW_MS);
+  recent.push(now);
+  hits.set(ip, recent);
+  if (hits.size > 5000) hits.clear();
+  return recent.length > MAX_PER_WINDOW;
+};
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -23,17 +42,59 @@ Deno.serve(async (req) => {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
 
+  if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
+
   try {
-    const parsed = BodySchema.safeParse(await req.json());
-    if (!parsed.success) {
-      return json({ error: parsed.error.flatten().fieldErrors }, 400);
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      req.headers.get("cf-connecting-ip") ||
+      "unknown";
+
+    if (throttled(ip)) {
+      return json({ error: "Too many requests. Please try again shortly." }, 429);
     }
-    const { name, email, phone, company, message } = parsed.data;
+
+    const raw = await req.text();
+    if (raw.length > MAX_BODY_BYTES) {
+      return json({ error: "Request too large" }, 413);
+    }
+
+    let payload: unknown;
+    try {
+      payload = JSON.parse(raw);
+    } catch {
+      return json({ error: "Invalid request" }, 400);
+    }
+
+    const parsed = BodySchema.safeParse(payload);
+    if (!parsed.success) {
+      return json({ error: "Please check the form fields and try again." }, 400);
+    }
+    const { name, email, phone, company, message, website } = parsed.data;
+
+    // Bot filled the honeypot: accept silently, store nothing.
+    if (website.trim() !== "") {
+      return json({ ok: true });
+    }
 
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
+
+    // Collapse accidental duplicate submits (double click, retry) within 2 min.
+    const since = new Date(Date.now() - 2 * 60_000).toISOString();
+    const { data: existing } = await supabase
+      .from("quote_requests")
+      .select("id")
+      .eq("email", email)
+      .eq("message", message)
+      .gte("created_at", since)
+      .maybeSingle();
+
+    if (existing) {
+      return json({ ok: true, id: existing.id, duplicate: true });
+    }
 
     const { data: row, error: insertError } = await supabase
       .from("quote_requests")

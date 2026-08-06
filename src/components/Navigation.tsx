@@ -56,6 +56,7 @@ const Navigation = () => {
               <img
                 src={logo}
                 alt="Al Sandouq Al Ahmar Trading LLC Logo"
+                decoding="async"
                 className="h-14 md:h-16 w-auto"
               />
               <span className="font-display text-lg md:text-xl font-bold text-logo-blue hidden lg:block stamped">
@@ -80,11 +81,9 @@ const Navigation = () => {
               ))}
             </div>
 
-            {/* Part number stamp + CTA */}
+            {/* CTA */}
             <div className="flex items-center gap-4 md:gap-5">
-              <span className="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.22em] text-brass stamped whitespace-nowrap">
-                MTL-7042 // REV.C
-              </span>
+
 
               {/* CTA Button - Desktop */}
               <Button

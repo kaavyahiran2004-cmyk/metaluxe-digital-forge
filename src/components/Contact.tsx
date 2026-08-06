@@ -19,6 +19,7 @@ const Contact = () => {
     phone: "",
     company: "",
     message: "",
+    website: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -47,11 +48,13 @@ const Contact = () => {
       return;
     }
 
+    if (isSubmitting) return;
+
     setIsSubmitting(true);
 
     try {
       const { data, error } = await supabase.functions.invoke("submit-quote", {
-        body: { name, email, phone, company, message },
+        body: { name, email, phone, company, message, website: formData.website },
       });
 
       if (error || (data && (data as { error?: string }).error)) {
@@ -60,7 +63,7 @@ const Contact = () => {
 
       setIsSuccess(true);
       toast.success("Enquiry received. We'll respond within 24 hours.");
-      setFormData({ name: "", email: "", phone: "", company: "", message: "" });
+      setFormData({ name: "", email: "", phone: "", company: "", message: "", website: "" });
 
       setTimeout(() => setIsSuccess(false), 6000);
     } catch {
@@ -123,7 +126,21 @@ const Contact = () => {
 
             <div className="p-6 md:p-8">
               {!isSuccess ? (
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="relative space-y-6" noValidate>
+                  {/* Honeypot: hidden from humans, bots fill it */}
+                  <div className="absolute left-[-9999px] top-auto w-px h-px overflow-hidden" aria-hidden="true">
+                    <label htmlFor="website">Website</label>
+                    <input
+                      id="website"
+                      name="website"
+                      type="text"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={formData.website}
+                      onChange={handleChange}
+                    />
+                  </div>
+
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
                       <label className={labelClass} htmlFor="name">Name *</label>
