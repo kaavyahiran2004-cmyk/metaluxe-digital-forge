@@ -1,5 +1,13 @@
 # Mobile Layout Fix, Performance Pass, Favicon
 
+## 0. Fix the current build error
+
+`src/components/Hero.tsx` uses the lowercase `fetchpriority` attribute, which
+React/TypeScript rejects. Change it to `fetchPriority` so the build compiles
+again. (Cannot be applied in plan mode — it lands first once approved.)
+
+
+
 ## 1. Mobile horizontal overflow (the white bar on the right)
 
 Measured at a 390px-wide viewport: the page scrolls to 425px, so every centered
