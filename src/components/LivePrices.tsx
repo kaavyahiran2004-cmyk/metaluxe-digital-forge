@@ -41,12 +41,12 @@ const LivePrices = () => {
             <span className="hidden sm:inline">Market Desk</span>
           </div>
 
-          <div className="p-8 md:p-12 space-y-8">
+          <div className="p-5 sm:p-8 md:p-12 space-y-8">
             <div className="flex items-start gap-4">
-              <div className="border border-border bg-primary p-3">
+              <div className="border border-border bg-primary p-3 flex-shrink-0">
                 <TrendingUp className="w-6 h-6 text-brass-light" />
               </div>
-              <div>
+              <div className="min-w-0">
                 <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground">
                   Live Metal Prices
                 </h2>
@@ -61,12 +61,12 @@ const LivePrices = () => {
               {features.map((feature, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between border-b border-rule py-3 hover:bg-paper-high transition-colors duration-150"
+                  className="flex flex-wrap items-center gap-x-3 gap-y-1 justify-between border-b border-rule py-3 hover:bg-paper-high transition-colors duration-150"
                 >
                   <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
                     {feature.code}
                   </span>
-                  <span className="font-mono text-sm uppercase tracking-[0.12em] text-foreground">
+                  <span className="font-mono text-xs sm:text-sm uppercase tracking-[0.12em] text-foreground min-w-0 break-words">
                     {feature.label}
                   </span>
                   <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-rust">
@@ -75,6 +75,7 @@ const LivePrices = () => {
                 </div>
               ))}
             </div>
+
 
             {/* Email Notification Form */}
             <form onSubmit={handleNotifyMe} className="max-w-lg">

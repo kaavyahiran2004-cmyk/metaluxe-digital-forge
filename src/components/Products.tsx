@@ -73,7 +73,8 @@ const Products = () => {
                     src={product.image}
                     alt={product.title}
                     loading="lazy"
-                    className="w-full h-full object-cover grayscale contrast-110 transition-all duration-500 group-hover:grayscale-0"
+                    decoding="async"
+                    className="w-full h-full object-cover grayscale contrast-110 transition-[filter] duration-500 group-hover:grayscale-0"
                   />
                   <div className="absolute inset-0 bg-[hsl(var(--rust))]/10 mix-blend-multiply" />
                   <div className="absolute top-3 right-3 p-2 border border-border bg-paper">

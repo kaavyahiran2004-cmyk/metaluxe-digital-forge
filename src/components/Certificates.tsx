@@ -91,7 +91,7 @@ const Certificates = () => {
             variant="outline"
             size="lg"
             onClick={scrollToContact}
-            className="border border-border bg-transparent text-foreground font-mono text-xs uppercase tracking-[0.18em] px-8 py-6 press-sm hover:bg-primary hover:text-primary-foreground transition-all duration-150"
+            className="w-full sm:w-auto whitespace-normal h-auto text-center border border-border bg-transparent text-foreground font-mono text-xs uppercase tracking-[0.18em] px-6 sm:px-8 py-5 sm:py-6 press-sm hover:bg-primary hover:text-primary-foreground transition-all duration-150"
           >
             <Shield className="mr-3 w-4 h-4" />
             Request Verification Documents

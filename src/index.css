@@ -92,6 +92,22 @@
     scroll-behavior: smooth;
   }
 
+  /* Nothing may push the page sideways on small screens. */
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: hidden;
+    overscroll-behavior-y: none;
+  }
+
+  img,
+  svg,
+  video,
+  canvas {
+    max-width: 100%;
+  }
+
+
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;
