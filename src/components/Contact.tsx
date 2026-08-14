@@ -261,7 +261,7 @@ const Contact = () => {
               return (
                 <div
                   key={index}
-                  className="flex items-start gap-4 border-r border-b border-border bg-sheet p-6 hover:bg-paper-high transition-colors duration-150"
+                  className="flex items-start gap-4 border-r border-b border-border bg-sheet p-5 sm:p-6 hover:bg-paper-high transition-colors duration-150 min-w-0"
                 >
                   <div className="w-11 h-11 border border-border bg-primary flex items-center justify-center flex-shrink-0">
                     <Icon className="w-5 h-5 text-brass-light" />
@@ -270,9 +270,10 @@ const Contact = () => {
                     <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground mb-1">
                       {info.title}
                     </h3>
-                    <p className="font-display text-lg font-bold text-foreground break-words">
+                    <p className="font-display text-base sm:text-lg font-bold text-foreground break-all">
                       {info.content}
                     </p>
+
                     <p className="mt-1 text-sm text-muted-foreground">
                       {info.subtext}
                     </p>
