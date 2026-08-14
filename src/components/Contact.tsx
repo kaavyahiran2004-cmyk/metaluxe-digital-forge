@@ -116,7 +116,7 @@ const Contact = () => {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start min-w-0">
           {/* Left Column - Contact Form */}
           <div className="border-2 border-border bg-sheet press">
             <div className="nameplate flex items-center justify-between">
