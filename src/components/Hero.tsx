@@ -28,7 +28,6 @@ const Hero = () => {
           alt="Industrial metal trading yard"
           loading="eager"
           decoding="async"
-          fetchPriority="high"
           className="w-full h-full object-cover opacity-20 grayscale contrast-125"
         />
         <div className="absolute inset-0 bg-paper/70" />

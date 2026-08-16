@@ -90,14 +90,15 @@
 
   html {
     scroll-behavior: smooth;
+    overflow-x: clip;
   }
 
   /* Nothing may push the page sideways on small screens. */
-  html,
   body {
     max-width: 100%;
-    overflow-x: hidden;
-    overscroll-behavior-y: none;
+    overflow-x: clip;
+    overflow-y: visible;
+    touch-action: pan-y;
   }
 
   img,
