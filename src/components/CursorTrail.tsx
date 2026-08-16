@@ -7,7 +7,7 @@ import { useEffect, useRef } from "react";
  * Fine-pointer only, disabled under prefers-reduced-motion, paused when hidden.
  */
 
-const POOL = 220;
+const POOL = 160;
 const LIFE = 1100; // ms
 const SPACING = 7; // px between filings along the pointer path
 
@@ -137,10 +137,9 @@ const CursorTrail = () => {
     };
 
     let raf = 0;
-    let running = true;
+    let running = false;
 
     const frame = (now: number) => {
-      raf = requestAnimationFrame(frame);
       if (!running) return;
 
       drainPointer(now);
@@ -177,17 +176,24 @@ const CursorTrail = () => {
 
         ctx.restore();
       }
+
+      raf = requestAnimationFrame(frame);
     };
 
     const onVisibility = () => {
-      running = !document.hidden;
-      if (!running) {
+      if (document.hidden) {
+        running = false;
+        cancelAnimationFrame(raf);
         ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
         lastX = null;
         lastY = null;
+      } else if (!running) {
+        running = true;
+        raf = requestAnimationFrame(frame);
       }
     };
 
+    running = true;
     raf = requestAnimationFrame(frame);
     window.addEventListener("pointermove", onMove, { passive: true });
     window.addEventListener("resize", resize, { passive: true });
