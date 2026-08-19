@@ -1,4 +1,5 @@
 const SHEET_NAME = "Quote Requests";
+const SPREADSHEET_ID = "1Wdj4uDFpy1Gv_vFXxOpvZ0Wz3JTXnX3t1Fg-I3JK9c8";
 const NOTIFY_TO = "amitjain@alsandouqalahmar.com";
 
 function doPost(e) {
@@ -25,7 +26,9 @@ function doPost(e) {
       return jsonResponse({ error: "Invalid request" });
     }
 
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
+    // Use the spreadsheet ID explicitly. This remains reliable when the web app
+    // is invoked without an active container UI context.
+    const sheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(SHEET_NAME);
     if (!sheet) {
       return jsonResponse({ error: "Sheet tab not found" });
     }
@@ -51,6 +54,13 @@ function doPost(e) {
     console.error(error);
     return jsonResponse({ error: "Unexpected error" });
   }
+}
+
+// Run once from the Apps Script editor after adding the script, so Google can
+// grant the spreadsheet and mail permissions before the web app is published.
+function authorizeServices() {
+  SpreadsheetApp.openById(SPREADSHEET_ID).getName();
+  MailApp.getRemainingDailyQuota();
 }
 
 function clean(value) {
