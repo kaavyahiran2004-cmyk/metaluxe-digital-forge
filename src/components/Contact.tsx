@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
 
 const inputClass =
   "bg-paper-container border-0 border-b-2 border-border rounded-none etched focus-visible:ring-0 focus-visible:border-rust";
@@ -53,12 +52,15 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
-      const { data, error } = await supabase.functions.invoke("submit-quote", {
-        body: { name, email, phone, company, message, website: formData.website },
+      const response = await fetch("/api/submit-quote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, phone, company, message, website: formData.website }),
       });
+      const data = (await response.json().catch(() => ({}))) as { error?: string };
 
-      if (error || (data && (data as { error?: string }).error)) {
-        throw error ?? new Error("Request failed");
+      if (!response.ok || data.error) {
+        throw new Error(data.error ?? "Request failed");
       }
 
       setIsSuccess(true);
