@@ -10,6 +10,9 @@ The website sends quote requests to the Vercel `/api/submit-quote` proxy. The pr
 
    `Timestamp | Name | Email | Phone | Company | Message | Source`
 
+   The script is bound to and explicitly opens the spreadsheet with ID
+   `1Wdj4uDFpy1Gv_vFXxOpvZ0Wz3JTXnX3t1Fg-I3JK9c8`.
+
 4. Open `Extensions > Apps Script` and replace the editor contents with `Code.gs` from this folder.
 5. Under **Project Settings > Script properties**, add:
    - Property: `QUOTE_FORM_SECRET`
