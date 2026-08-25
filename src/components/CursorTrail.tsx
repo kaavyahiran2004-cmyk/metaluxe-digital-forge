@@ -218,24 +218,31 @@ const CursorTrail = () => {
     };
 
 
-    const onVisibility = () => {
-      if (document.hidden) {
-        running = false;
-        cancelAnimationFrame(raf);
-        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-        lastX = null;
-        lastY = null;
-      } else if (!running) {
-        running = true;
-        raf = requestAnimationFrame(frame);
-      }
+    const stop = () => {
+      running = false;
+      cancelAnimationFrame(raf);
+      raf = 0;
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      dirty = null;
+      lastX = null;
+      lastY = null;
     };
 
-    running = true;
-    raf = requestAnimationFrame(frame);
+    const onVisibility = () => {
+      if (document.hidden) stop();
+      else wake();
+    };
+
+    const onLeave = (e: PointerEvent) => {
+      if (!e.relatedTarget) stop();
+    };
+
+    wake();
     window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("pointerout", onLeave, { passive: true });
     window.addEventListener("resize", resize, { passive: true });
     document.addEventListener("visibilitychange", onVisibility);
+
 
     return () => {
       cancelAnimationFrame(raf);
