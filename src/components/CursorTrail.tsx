@@ -2,14 +2,21 @@ import { useEffect, useRef } from "react";
 
 /**
  * Metal-filings cursor trail.
- * Single canvas layer + one rAF loop, fixed particle pool, no per-particle DOM.
- * Pointer samples are interpolated so fast movement leaves a continuous ribbon.
- * Fine-pointer only, disabled under prefers-reduced-motion, paused when hidden.
+ *
+ * Performance note: a full-viewport canvas has to be re-composited over the whole
+ * page on every frame it changes, which is what made hovering over imagery stutter.
+ * Instead this uses a small canvas (BOX x BOX) that follows the pointer via a
+ * transform, so only a fraction of the screen is ever re-composited.
+ *
+ * Fine-pointer only, disabled under prefers-reduced-motion, paused when hidden or
+ * when the pointer leaves the window, and fully idle when no particle is alive.
  */
 
-const POOL = 160;
-const LIFE = 1100; // ms
+const POOL = 140;
+const LIFE = 900; // ms
 const SPACING = 7; // px between filings along the pointer path
+const BOX = 760; // CSS px, canvas edge length
+const RECENTER = 110; // px the pointer may stray from the canvas centre
 
 type Particle = {
   x: number;
@@ -44,7 +51,6 @@ const CursorTrail = () => {
     const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
-    // Metal palette sampled from the design tokens.
     const hsl = (v: string, l = 0, a = 1) => {
       const [h, s, li] = v.split(/\s+/);
       const lightness = Math.max(0, Math.min(100, parseFloat(li) + l));
@@ -67,15 +73,24 @@ const CursorTrail = () => {
     }));
 
     let dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const resize = () => {
+    const setup = () => {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = Math.floor(window.innerWidth * dpr);
-      canvas.height = Math.floor(window.innerHeight * dpr);
-      canvas.style.width = `${window.innerWidth}px`;
-      canvas.style.height = `${window.innerHeight}px`;
+      canvas.width = Math.floor(BOX * dpr);
+      canvas.height = Math.floor(BOX * dpr);
+      canvas.style.width = `${BOX}px`;
+      canvas.style.height = `${BOX}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
-    resize();
+    setup();
+
+    // Top-left corner of the canvas in viewport coordinates.
+    let originX = -BOX;
+    let originY = -BOX;
+    const place = (cx: number, cy: number) => {
+      originX = Math.round(cx - BOX / 2);
+      originY = Math.round(cy - BOX / 2);
+      canvas.style.transform = `translate3d(${originX}px, ${originY}px, 0)`;
+    };
 
     const pool: Particle[] = Array.from({ length: POOL }, () => ({
       x: 0, y: 0, vx: 0, vy: 0, size: 0, rot: 0, spin: 0,
@@ -111,21 +126,26 @@ const CursorTrail = () => {
       pendingX = e.clientX;
       pendingY = e.clientY;
       hasPending = true;
+      wake();
     };
 
     const drainPointer = (now: number) => {
       if (!hasPending) return;
       hasPending = false;
+
       if (lastX === null || lastY === null) {
+        place(pendingX, pendingY);
         lastX = pendingX;
         lastY = pendingY;
         emit(pendingX, pendingY, now);
         return;
       }
+
       const dx = pendingX - lastX;
       const dy = pendingY - lastY;
       const dist = Math.hypot(dx, dy);
       if (dist < 1) return;
+
       // Interpolate along the path so fast flicks stay continuous.
       const steps = Math.min(Math.ceil(dist / SPACING), 24);
       for (let i = 1; i <= steps; i++) {
@@ -134,27 +154,39 @@ const CursorTrail = () => {
       }
       lastX = pendingX;
       lastY = pendingY;
+
+      // Keep the small canvas around the pointer.
+      if (
+        Math.abs(pendingX - (originX + BOX / 2)) > RECENTER ||
+        Math.abs(pendingY - (originY + BOX / 2)) > RECENTER
+      ) {
+        place(pendingX, pendingY);
+      }
     };
 
     let raf = 0;
     let running = false;
+    let idleFrames = 0;
 
     const frame = (now: number) => {
       if (!running) return;
 
       drainPointer(now);
-      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      ctx.clearRect(0, 0, BOX, BOX);
 
+      let alive = 0;
       for (let i = 0; i < POOL; i++) {
         const p = pool[i];
         const age = now - p.born;
         if (age < 0 || age > LIFE) continue;
+        alive++;
 
         const t = age / LIFE;
         const ease = 1 - Math.pow(1 - t, 3); // ease-out settle
         const alpha = t < 0.12 ? t / 0.12 : Math.pow(1 - (t - 0.12) / 0.88, 1.6);
-        const x = p.x + p.vx * age * ease;
-        const y = p.y + p.vy * age * ease;
+        const x = p.x + p.vx * age * ease - originX;
+        const y = p.y + p.vy * age * ease - originY;
+        if (x < -10 || y < -10 || x > BOX + 10 || y > BOX + 10) continue;
         const s = p.size * (1 - t * 0.55);
 
         ctx.save();
@@ -166,7 +198,7 @@ const CursorTrail = () => {
         ctx.fillStyle = "rgba(20,18,16,0.35)";
         ctx.fillRect(-s / 2 + 1, -s / 2 + 1, s, s);
 
-        // Two-tone metallic face: lit top half, shaded lower half.
+        // Two-tone metallic face: lit top half, shaded lower body.
         ctx.fillStyle = p.shade;
         ctx.fillRect(-s / 2, -s / 2, s, s);
         ctx.fillStyle = p.face;
@@ -177,32 +209,59 @@ const CursorTrail = () => {
         ctx.restore();
       }
 
+      if (alive > 0) {
+        idleFrames = 0;
+      } else if (++idleFrames > 30) {
+        running = false;
+        raf = 0;
+        return;
+      }
+
       raf = requestAnimationFrame(frame);
     };
 
-    const onVisibility = () => {
-      if (document.hidden) {
-        running = false;
-        cancelAnimationFrame(raf);
-        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-        lastX = null;
-        lastY = null;
-      } else if (!running) {
+    const wake = () => {
+      if (!running && !document.hidden) {
         running = true;
+        idleFrames = 0;
         raf = requestAnimationFrame(frame);
       }
     };
 
-    running = true;
-    raf = requestAnimationFrame(frame);
+    const stop = () => {
+      running = false;
+      cancelAnimationFrame(raf);
+      raf = 0;
+      ctx.clearRect(0, 0, BOX, BOX);
+      lastX = null;
+      lastY = null;
+    };
+
+    const onVisibility = () => {
+      if (document.hidden) stop();
+    };
+
+    const onLeave = (e: PointerEvent) => {
+      if (!e.relatedTarget) stop();
+    };
+
+    const onResize = () => {
+      setup();
+      lastX = null;
+      lastY = null;
+    };
+
     window.addEventListener("pointermove", onMove, { passive: true });
-    window.addEventListener("resize", resize, { passive: true });
+    window.addEventListener("pointerout", onLeave, { passive: true });
+    window.addEventListener("resize", onResize, { passive: true });
     document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
+      running = false;
       cancelAnimationFrame(raf);
       window.removeEventListener("pointermove", onMove);
-      window.removeEventListener("resize", resize);
+      window.removeEventListener("pointerout", onLeave);
+      window.removeEventListener("resize", onResize);
       document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []);
@@ -211,7 +270,8 @@ const CursorTrail = () => {
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 z-[100]"
+      className="pointer-events-none fixed left-0 top-0 z-[100]"
+      style={{ transform: "translate3d(-9999px, -9999px, 0)" }}
     />
   );
 };

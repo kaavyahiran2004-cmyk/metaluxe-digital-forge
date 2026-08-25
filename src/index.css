@@ -217,9 +217,17 @@
   }
 
 
+  /* Promote to its own layer only while hovered, so filter animations
+     composite on the GPU instead of repainting every frame. */
+  .group:hover .hover-layer {
+    will-change: filter;
+    transform: translateZ(0);
+  }
+
   .animate-fade-in {
     animation: fadeIn var(--transition-normal) forwards;
   }
+
 }
 
 @keyframes fadeIn {

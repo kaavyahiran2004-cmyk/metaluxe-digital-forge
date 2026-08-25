@@ -74,9 +74,10 @@ const Products = () => {
                     alt={product.title}
                     loading="lazy"
                     decoding="async"
-                    className="w-full h-full object-cover grayscale contrast-110 transition-[filter] duration-500 group-hover:grayscale-0"
+                    className="w-full h-full object-cover grayscale contrast-110 transition-[filter] duration-300 group-hover:grayscale-0 hover-layer"
                   />
-                  <div className="absolute inset-0 bg-[hsl(var(--rust))]/10 mix-blend-multiply" />
+                  <div className="absolute inset-0 bg-[hsl(var(--rust))]/10" />
+
                   <div className="absolute top-3 right-3 p-2 border border-border bg-paper">
                     <Icon className="w-5 h-5 text-rust" />
                   </div>
