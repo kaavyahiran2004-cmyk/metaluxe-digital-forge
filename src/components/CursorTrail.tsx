@@ -245,11 +245,14 @@ const CursorTrail = () => {
 
 
     return () => {
+      running = false;
       cancelAnimationFrame(raf);
       window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerout", onLeave);
       window.removeEventListener("resize", resize);
       document.removeEventListener("visibilitychange", onVisibility);
     };
+
   }, []);
 
   return (
