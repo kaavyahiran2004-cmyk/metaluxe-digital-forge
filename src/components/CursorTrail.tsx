@@ -138,17 +138,28 @@ const CursorTrail = () => {
 
     let raf = 0;
     let running = false;
+    // Region touched by the previous frame, so we only clear what we drew.
+    let dirty: { x: number; y: number; w: number; h: number } | null = null;
+    let idleFrames = 0;
 
     const frame = (now: number) => {
       if (!running) return;
 
       drainPointer(now);
-      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+      if (dirty) {
+        ctx.clearRect(dirty.x, dirty.y, dirty.w, dirty.h);
+        dirty = null;
+      }
+
+      let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+      let alive = 0;
 
       for (let i = 0; i < POOL; i++) {
         const p = pool[i];
         const age = now - p.born;
         if (age < 0 || age > LIFE) continue;
+        alive++;
 
         const t = age / LIFE;
         const ease = 1 - Math.pow(1 - t, 3); // ease-out settle
@@ -156,6 +167,12 @@ const CursorTrail = () => {
         const x = p.x + p.vx * age * ease;
         const y = p.y + p.vy * age * ease;
         const s = p.size * (1 - t * 0.55);
+
+        const r = s + 3;
+        if (x - r < minX) minX = x - r;
+        if (y - r < minY) minY = y - r;
+        if (x + r > maxX) maxX = x + r;
+        if (y + r > maxY) maxY = y + r;
 
         ctx.save();
         ctx.translate(x, y);
@@ -177,8 +194,27 @@ const CursorTrail = () => {
         ctx.restore();
       }
 
+      if (alive > 0) {
+        idleFrames = 0;
+        dirty = { x: minX, y: minY, w: maxX - minX, h: maxY - minY };
+      } else if (++idleFrames > 120) {
+        // Nothing to draw and pointer is idle: stop burning frames.
+        running = false;
+        raf = 0;
+        return;
+      }
+
       raf = requestAnimationFrame(frame);
     };
+
+    const wake = () => {
+      if (!running && !document.hidden) {
+        running = true;
+        idleFrames = 0;
+        raf = requestAnimationFrame(frame);
+      }
+    };
+
 
     const onVisibility = () => {
       if (document.hidden) {
