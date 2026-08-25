@@ -111,7 +111,9 @@ const CursorTrail = () => {
       pendingX = e.clientX;
       pendingY = e.clientY;
       hasPending = true;
+      wake();
     };
+
 
     const drainPointer = (now: number) => {
       if (!hasPending) return;
