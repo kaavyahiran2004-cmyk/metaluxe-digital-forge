@@ -70,7 +70,7 @@ const Navigation = () => {
                   alt="Al Sandouq Al Ahmar Trading LLC Logo"
                   width={433}
                   height={524}
-                  fetchPriority="high"
+                  {...{ fetchpriority: "high" }}
                   decoding="async"
                   className="h-14 md:h-16 w-auto"
                 />
