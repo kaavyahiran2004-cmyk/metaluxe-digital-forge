@@ -1,6 +1,11 @@
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroBg from "@/assets/hero-bg.jpg";
+import heroAvif from "@/assets/hero-bg.avif";
+import heroAvif1280 from "@/assets/hero-bg-1280.avif";
+import heroAvif960 from "@/assets/hero-bg-960.avif";
+import heroWebp from "@/assets/hero-bg.webp";
+
 
 const Hero = () => {
   const scrollToSection = (id: string) => {
