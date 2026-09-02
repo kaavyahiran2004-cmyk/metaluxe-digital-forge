@@ -28,7 +28,7 @@ const Hero = () => {
     >
       {/* Background plate */}
       <div className="absolute inset-0 z-0">
-        <picture>
+        <picture className="block absolute inset-0">
           <source
             type="image/avif"
             srcSet={`${heroAvif960} 960w, ${heroAvif1280} 1280w, ${heroAvif} 1920w`}
@@ -46,6 +46,8 @@ const Hero = () => {
             className="w-full h-full object-cover opacity-20 grayscale contrast-125"
           />
         </picture>
+        <div className="absolute inset-0 bg-paper/70" />
+
 
         {/* Blueprint grid */}
         <div
