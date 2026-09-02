@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo.png";
+import logoAvif from "@/assets/logo.avif";
+import logoWebp from "@/assets/logo.webp";
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -60,12 +62,19 @@ const Navigation = () => {
               onClick={() => scrollToSection("hero")}
               className="flex items-center gap-4 group"
             >
-              <img
-                src={logo}
-                alt="Al Sandouq Al Ahmar Trading LLC Logo"
-                decoding="async"
-                className="h-14 md:h-16 w-auto"
-              />
+              <picture>
+                <source type="image/avif" srcSet={logoAvif} />
+                <source type="image/webp" srcSet={logoWebp} />
+                <img
+                  src={logo}
+                  alt="Al Sandouq Al Ahmar Trading LLC Logo"
+                  width={433}
+                  height={524}
+                  fetchPriority="high"
+                  decoding="async"
+                  className="h-14 md:h-16 w-auto"
+                />
+              </picture>
               <span className="font-display text-lg md:text-xl font-bold text-logo-blue hidden lg:block stamped">
                 Al Sandouq Al Ahmar{" "}
                 <span className="text-logo-copper">Trading LLC</span>

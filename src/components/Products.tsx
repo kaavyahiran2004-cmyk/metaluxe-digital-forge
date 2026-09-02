@@ -2,6 +2,12 @@ import { Package, Zap, Leaf } from "lucide-react";
 import ferrousImg from "@/assets/ferrous-metals.jpg";
 import nonFerrousImg from "@/assets/non-ferrous-metals.jpg";
 import eWasteImg from "@/assets/e-waste.jpg";
+import ferrousAvif from "@/assets/ferrous-metals.avif";
+import nonFerrousAvif from "@/assets/non-ferrous-metals.avif";
+import eWasteAvif from "@/assets/e-waste.avif";
+import ferrousWebp from "@/assets/ferrous-metals.webp";
+import nonFerrousWebp from "@/assets/non-ferrous-metals.webp";
+import eWasteWebp from "@/assets/e-waste.webp";
 
 const Products = () => {
   const products = [
@@ -12,6 +18,8 @@ const Products = () => {
       features: ["Steel Scrap", "Iron Ore", "Cast Iron", "HMS 1&2"],
       icon: Package,
       image: ferrousImg,
+      avif: ferrousAvif,
+      webp: ferrousWebp,
     },
     {
       title: "Non-Ferrous Metals",
@@ -20,6 +28,8 @@ const Products = () => {
       features: ["Copper Wire", "Aluminum Scrap", "Brass", "Bronze"],
       icon: Zap,
       image: nonFerrousImg,
+      avif: nonFerrousAvif,
+      webp: nonFerrousWebp,
       featured: true,
     },
     {
@@ -29,6 +39,8 @@ const Products = () => {
       features: ["Circuit Boards", "Electronic Components", "Precious Metals", "Battery Recycling"],
       icon: Leaf,
       image: eWasteImg,
+      avif: eWasteAvif,
+      webp: eWasteWebp,
     },
   ];
 
@@ -69,13 +81,19 @@ const Products = () => {
 
                 {/* Image plate */}
                 <div className="relative h-56 overflow-hidden border-b border-border">
-                  <img
-                    src={product.image}
-                    alt={product.title}
-                    loading="lazy"
-                    decoding="async"
-                    className="w-full h-full object-cover grayscale contrast-110 transition-[filter] duration-300 group-hover:grayscale-0 hover-layer"
-                  />
+                  <picture className="block w-full h-full">
+                    <source type="image/avif" srcSet={product.avif} />
+                    <source type="image/webp" srcSet={product.webp} />
+                    <img
+                      src={product.image}
+                      alt={product.title}
+                      width={800}
+                      height={600}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover grayscale contrast-110 transition-[filter] duration-300 group-hover:grayscale-0 hover-layer"
+                    />
+                  </picture>
                   <div className="absolute inset-0 bg-[hsl(var(--rust))]/10" />
 
                   <div className="absolute top-3 right-3 p-2 border border-border bg-paper">
