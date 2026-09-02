@@ -4,6 +4,8 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { toast } from "sonner";
 import logo from "@/assets/logo.png";
+import logoAvif from "@/assets/logo.avif";
+import logoWebp from "@/assets/logo.webp";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -58,13 +60,19 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Column 1 - Company Info */}
           <div className="space-y-5">
-            <img
-              src={logo}
-              alt="Al Sandouq Al Ahmar Trading LLC Logo"
-              loading="lazy"
-              decoding="async"
-              className="h-20 w-auto"
-            />
+            <picture>
+              <source type="image/avif" srcSet={logoAvif} />
+              <source type="image/webp" srcSet={logoWebp} />
+              <img
+                src={logo}
+                alt="Al Sandouq Al Ahmar Trading LLC Logo"
+                width={433}
+                height={524}
+                loading="lazy"
+                decoding="async"
+                className="h-20 w-auto"
+              />
+            </picture>
             <h3 className="font-display text-xl font-bold text-logo-blue-light">
               Al Sandouq Al Ahmar{" "}
               <span className="text-logo-copper-light">Trading LLC</span>

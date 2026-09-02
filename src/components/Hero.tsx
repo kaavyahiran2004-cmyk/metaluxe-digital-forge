@@ -1,6 +1,11 @@
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroBg from "@/assets/hero-bg.jpg";
+import heroAvif from "@/assets/hero-bg.avif";
+import heroAvif1280 from "@/assets/hero-bg-1280.avif";
+import heroAvif960 from "@/assets/hero-bg-960.avif";
+import heroWebp from "@/assets/hero-bg.webp";
+
 
 const Hero = () => {
   const scrollToSection = (id: string) => {
@@ -23,14 +28,27 @@ const Hero = () => {
     >
       {/* Background plate */}
       <div className="absolute inset-0 z-0">
-        <img
-          src={heroBg}
-          alt="Industrial metal trading yard"
-          loading="eager"
-          decoding="async"
-          className="w-full h-full object-cover opacity-20 grayscale contrast-125"
-        />
+        <picture className="block absolute inset-0">
+          <source
+            type="image/avif"
+            srcSet={`${heroAvif960} 960w, ${heroAvif1280} 1280w, ${heroAvif} 1920w`}
+            sizes="100vw"
+          />
+          <source type="image/webp" srcSet={heroWebp} />
+          <img
+            src={heroBg}
+            alt="Industrial metal trading yard"
+            width={1920}
+            height={1080}
+            loading="eager"
+            {...{ fetchpriority: "high" }}
+            decoding="async"
+            className="w-full h-full object-cover opacity-20 grayscale contrast-125"
+          />
+        </picture>
         <div className="absolute inset-0 bg-paper/70" />
+
+
         {/* Blueprint grid */}
         <div
           className="absolute inset-0 opacity-[0.14]"
