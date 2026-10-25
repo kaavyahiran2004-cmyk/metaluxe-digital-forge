@@ -102,7 +102,7 @@ const Footer = () => {
 
       {/* Bottom Bar */}
       <div className="border-t border-[hsl(var(--paper-dim))]/30">
-        <div className="container mx-auto px-4 md:px-6 py-5 md:pr-16">
+        <div className="container mx-auto px-4 md:px-6 py-5 pb-16 md:pb-5 md:pr-20">
           <div className="flex flex-col md:flex-row items-center justify-between gap-3 font-mono text-[11px] uppercase tracking-[0.14em] text-[hsl(var(--paper-dim))]">
             <p>© 2026 Al Sandouq Al Ahmar Trading LLC. All rights reserved.</p>
 
