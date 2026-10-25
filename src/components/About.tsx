@@ -1,12 +1,11 @@
 import { Award, Globe, Users, TrendingUp } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
 
 const About = () => {
   const stats = [
-    { icon: Award, value: 10, suffix: "+", label: "Years in Business" },
+    { icon: Award, value: 13, suffix: "+", label: "Years in Business" },
     { icon: Globe, value: 5000, suffix: "+", label: "Containers Traded" },
-    { icon: Users, value: 200, suffix: "+", label: "Global Clients" },
-    { icon: TrendingUp, value: 99, suffix: "%", label: "Client Satisfaction" },
+    { icon: Users, value: 15, suffix: "+", label: "Countries Served" },
+    { icon: TrendingUp, value: 100, suffix: "%", label: "Inspection Compliance" },
   ];
 
   return (
@@ -18,23 +17,23 @@ const About = () => {
             <span className="tag">About Us</span>
 
             <h2 className="font-display text-4xl md:text-5xl font-bold leading-tight text-foreground stamped">
-              Pioneering Excellence
-              <span className="block text-rust">in Metal Trading</span>
+              Over a Decade of Reliable
+              <span className="block text-rust">Metal Trading in the UAE</span>
             </h2>
 
             <div className="double-rule" />
 
             <div className="space-y-4 text-lg text-muted-foreground leading-relaxed">
               <p>
-                Since 2013, <span className="text-foreground font-semibold">Al Sandouq Al Ahmar Trading LLC</span> has been at the forefront of the metal trading industry in the UAE, establishing itself as a trusted partner for businesses worldwide.
+                Operating out of Industrial Area 10 in Sharjah since 2013, <span className="text-foreground font-semibold">Al Sandouq Al Ahmar Trading LLC</span> is a physical scrap metal processor and exporter serving industrial buyers across Asia, the Middle East, and Europe.
               </p>
 
               <p>
-                We specialize in the trade of <span className="text-rust font-semibold">ferrous and non-ferrous metals</span>, along with comprehensive <span className="text-rust font-semibold">e-waste recycling solutions</span>. Our commitment to quality, sustainability, and customer satisfaction has enabled us to build lasting relationships across the globe.
+                We handle the sourcing, sorting, shearing, and container loading of <span className="text-rust font-semibold">ferrous and non-ferrous scrap</span> alongside specialized <span className="text-rust font-semibold">e-waste recovery</span>. Every shipment is weighed, inspected, and documented at our facility before dispatch.
               </p>
 
               <p>
-                With <span className="text-foreground font-semibold">ISO certification</span> and a proven track record, we ensure every transaction meets the highest standards of quality and compliance.
+                Backed by <span className="text-foreground font-semibold">ISO 9001 and ISO 14001 certifications</span>, we focus on accurate grading, clean loading, and dependable delivery schedules for long-term supply partners.
               </p>
             </div>
 
@@ -71,57 +70,14 @@ interface StatCardProps {
 }
 
 const StatCard = ({ icon: Icon, value, suffix, label }: StatCardProps) => {
-  const [count, setCount] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.3 }
-    );
-
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (!isVisible) return;
-
-    const duration = 1600;
-    const steps = 50;
-    const increment = value / steps;
-    let current = 0;
-
-    const timer = setInterval(() => {
-      current += increment;
-      if (current >= value) {
-        setCount(value);
-        clearInterval(timer);
-      } else {
-        setCount(Math.floor(current));
-      }
-    }, duration / steps);
-
-    return () => clearInterval(timer);
-  }, [isVisible, value]);
-
   return (
     <div
-      ref={ref}
       className="relative border-r border-b border-border bg-sheet p-6 hover:bg-paper-high transition-colors duration-150"
     >
       <Icon className="w-6 h-6 text-rust" />
 
       <div className="mt-4 font-mono text-3xl md:text-4xl font-bold text-foreground">
-        {count.toLocaleString()}{suffix}
+        {value}{suffix}
       </div>
 
       <div className="mt-1 font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground">

@@ -7,7 +7,7 @@ const BodySchema = z.object({
   email: z.string().trim().email().max(255),
   phone: z.string().trim().min(4).max(40),
   company: z.string().trim().max(150).optional().default(""),
-  message: z.string().trim().min(20).max(2000),
+  message: z.string().trim().min(1).max(2000),
   // Honeypot: humans never see or fill this.
   website: z.string().max(200).optional().default(""),
 });

@@ -79,7 +79,7 @@ const Footer = () => {
             </h3>
 
             <p className="text-sm leading-relaxed text-[hsl(var(--paper-dim))]">
-              Leading metal trading company in UAE, specializing in ferrous, non-ferrous metals, and e-waste recycling since 2013.
+              Physical scrap metal processor and exporter based in Sharjah, UAE. Specializing in ferrous, non-ferrous, and e-waste trading since 2013.
             </p>
             <div className="flex gap-2 pt-1">
               {socialLinks.map((social, index) => {
@@ -167,7 +167,7 @@ const Footer = () => {
       <div className="border-t border-[hsl(var(--paper-dim))]/30">
         <div className="container mx-auto px-4 md:px-6 py-5">
           <div className="flex flex-col md:flex-row items-center justify-between gap-3 font-mono text-[11px] uppercase tracking-[0.14em] text-[hsl(var(--paper-dim))]">
-            <p>© 2024 Al Sandouq Al Ahmar Trading LLC. All rights reserved.</p>
+            <p>© 2026 Al Sandouq Al Ahmar Trading LLC. All rights reserved.</p>
 
             <div className="flex items-center gap-5">
               <button className="hover:text-brass-light transition-colors duration-150">
@@ -177,8 +177,6 @@ const Footer = () => {
                 Terms of Service
               </button>
             </div>
-
-            <p>Made with precision in UAE</p>
           </div>
         </div>
       </div>
