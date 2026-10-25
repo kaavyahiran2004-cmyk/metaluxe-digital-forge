@@ -16,7 +16,7 @@ const Hero = () => {
   };
 
   const stats = [
-    { value: "10+", label: "Years Experience" },
+    { value: "13+", label: "Years Experience" },
     { value: "5000+", label: "Containers Traded" },
     { value: "ISO", label: "Certified" },
   ];
@@ -66,8 +66,8 @@ const Hero = () => {
           <div className="border-2 border-border bg-paper/85 press">
             {/* Manifest header */}
             <div className="nameplate flex items-center justify-between">
-              <span>Est. 2013 &mdash; United Arab Emirates</span>
-              <span className="hidden sm:inline">Ref. ASA / MTL / 01</span>
+              <span>Est. 2013 &mdash; Sharjah, United Arab Emirates</span>
+              <span className="hidden sm:inline">Sharjah, UAE</span>
             </div>
 
             <div className="p-6 md:p-12 space-y-8">
@@ -80,10 +80,7 @@ const Hero = () => {
               <div className="double-rule" />
 
               <p className="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed">
-                Pioneering Excellence in Metal Trading
-                <span className="block mt-2 font-mono text-xs uppercase tracking-[0.18em] text-foreground">
-                  Serving UAE &amp; Beyond Since 2013
-                </span>
+                Direct Supplier &amp; Processor of Ferrous, Non-Ferrous, and Electronic Scrap Metal from the UAE to Global Markets.
               </p>
 
               {/* CTA Buttons */}

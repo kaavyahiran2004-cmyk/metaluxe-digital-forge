@@ -13,9 +13,9 @@ const Products = () => {
   const products = [
     {
       title: "Ferrous Metals",
-      code: "FE-01",
-      description: "High-quality steel, iron, and related ferrous materials for industrial applications worldwide.",
-      features: ["Steel Scrap", "Iron Ore", "Cast Iron", "HMS 1&2"],
+      code: "Ferrous",
+      description: "Heavy melting steel and cast iron scrap processed and inspected for direct mill and foundry charging.",
+      features: ["HMS 1&2", "Shredded Steel Scrap", "Cast Iron Scrap", "LMS Bundles"],
       icon: Package,
       image: ferrousImg,
       avif: ferrousAvif,
@@ -23,9 +23,9 @@ const Products = () => {
     },
     {
       title: "Non-Ferrous Metals",
-      code: "NF-02",
-      description: "Premium copper, aluminum, brass, and specialty metals sourced and delivered globally.",
-      features: ["Copper Wire", "Aluminum Scrap", "Brass", "Bronze"],
+      code: "Non-Ferrous",
+      description: "High-purity copper, aluminum, and brass scrap sorted and graded to international recovery standards.",
+      features: ["Copper Wire (Millberry/Berry)", "Aluminum Scrap (Tense/Taint)", "Honey Brass", "Bronze & Gunmetal"],
       icon: Zap,
       image: nonFerrousImg,
       avif: nonFerrousAvif,
@@ -34,9 +34,9 @@ const Products = () => {
     },
     {
       title: "E-Waste Recycling",
-      code: "EW-03",
-      description: "Sustainable electronic waste processing and precious metal recovery services.",
-      features: ["Circuit Boards", "Electronic Components", "Precious Metals", "Battery Recycling"],
+      code: "E-Waste",
+      description: "Compliant dismantling and sorting of telecom boards, industrial IT hardware, and metal-bearing electronic scrap.",
+      features: ["High-Grade Circuit Boards", "Telecom & Server Scrap", "Insulated Copper Cable", "Industrial Electric Motors"],
       icon: Leaf,
       image: eWasteImg,
       avif: eWasteAvif,
@@ -55,7 +55,7 @@ const Products = () => {
           </h2>
           <div className="double-rule mb-4" />
           <p className="text-lg text-muted-foreground">
-            Comprehensive metal trading solutions backed by decades of expertise and global reach
+            Sorted, graded, and container-loaded scrap metals supplied directly from our Sharjah yard to international mills and recyclers.
           </p>
         </div>
 
@@ -118,9 +118,6 @@ const Products = () => {
                         className="flex items-center justify-between py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-foreground"
                       >
                         <span>{feature}</span>
-                        <span className="text-muted-foreground">
-                          {String(idx + 1).padStart(2, "0")}
-                        </span>
                       </li>
                     ))}
                   </ul>
