@@ -42,11 +42,6 @@ const Contact = () => {
       return;
     }
 
-    if (message.length < 20) {
-      toast.error("Please write at least 20 characters in your message");
-      return;
-    }
-
     if (isSubmitting) return;
 
     setIsSubmitting(true);
@@ -114,7 +109,7 @@ const Contact = () => {
           </h2>
           <div className="double-rule mb-4" />
           <p className="text-lg text-muted-foreground">
-            Ready to discuss your metal trading needs? Reach out and let's build a partnership
+            Looking for current availability, container pricing, or yard inspection details? Send your inquiry directly to our trading desk.
           </p>
         </div>
 
@@ -123,7 +118,6 @@ const Contact = () => {
           <div className="border-2 border-border bg-sheet press">
             <div className="nameplate flex items-center justify-between">
               <span>Quote Request</span>
-              <span className="hidden sm:inline">Form / ASA-Q</span>
             </div>
 
             <div className="p-6 md:p-8">
@@ -222,9 +216,6 @@ const Contact = () => {
                       disabled={isSubmitting}
                       required
                     />
-                    <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
-                      Minimum 20 characters
-                    </p>
                   </div>
 
                   <Button
